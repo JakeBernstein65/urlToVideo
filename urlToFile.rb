@@ -4,8 +4,8 @@ require 'open-uri'
 
 File.open("./urls.txt", "r+") do |f|
  
-  folder = "Action Movie"
-  videoName = "Action"
+  folder = "Generic Folder"
+  videoName = "Video"
 
   f.each_line do |line|
     if $. == 1
@@ -28,7 +28,7 @@ File.open("./urls.txt", "r+") do |f|
 	response = http.request(request)
 
     puts response
-    File.open("./#{folder}/#{videoName}#{$.}.mp4", 'w+') {|f| f.write(response.body) }
+    File.open("./#{folder}/#{videoName}#{$.-2}.mp4", 'w+') {|f| f.write(response.body) }
     end
   end
 end
