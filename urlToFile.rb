@@ -7,8 +7,17 @@ File.open("./urls.txt", "r+") do |f|
   folder = "Action Movie"
   videoName = "Action"
 
-  Dir.mkdir "./#{folder}"
   f.each_line do |line|
+    if $. == 1
+      folder = line
+      puts folder
+       elsif $. == 2
+        videoName = line
+        puts videoName
+    else
+      if $. == 3
+      Dir.mkdir "./#{folder}"
+      end
     puts line
     uri = URI.parse(line)
 	http = Net::HTTP.new(uri.host, uri.port)
@@ -20,6 +29,7 @@ File.open("./urls.txt", "r+") do |f|
 
     puts response
     File.open("./#{folder}/#{videoName}#{$.}.mp4", 'w+') {|f| f.write(response.body) }
+    end
   end
 end
 	 puts "ending function now..."
