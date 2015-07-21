@@ -1,15 +1,35 @@
 require 'net/https'
-require 'net/http'
 require 'open-uri'
+require 'fileutils'
 
-File.open("./urls.txt", "r+") do |f|
+videoName = "tempVideo"
+dirname = "tempName"
+videoNumber = 0
+
+#for each file in directory
+Dir.foreach('urls') do |item|
+  next if item[0] == '.' or item[1] == '.'
+  puts "current file = #{item}"
+
+
+#for each line in file
+File.open("./urls/#{item}", "r+") do |f|
  
-  folder = "Action Movie"
-  videoName = "Action"
-
-  Dir.mkdir "./#{folder}"
   f.each_line do |line|
-    puts line
+    puts "current line = #{line}"
+    if $. == 1
+      dirname = line.gsub(/[\x00\/\\:\*\?\"<>\\\n\|]/, '')
+      unless File.directory?(dirname)
+      FileUtils.mkdir(dirname)
+
+      end
+    elsif $. == 2
+      unless videoName == line.gsub(/[\x00\/\\:\*\?\"<>\\\n\|]/, '')
+       videoName = line.gsub(/[\x00\/\\:\*\?\"<>\\\n\|]/, '')
+       videoNumber = 0
+     end
+  else
+    videoNumber += 1
     uri = URI.parse(line)
 	http = Net::HTTP.new(uri.host, uri.port)
 	http.use_ssl = true
@@ -18,9 +38,10 @@ File.open("./urls.txt", "r+") do |f|
 	request = Net::HTTP::Get.new(uri.request_uri)
 	response = http.request(request)
 
-    puts response
-    File.open("./#{folder}/#{videoName}#{$.}.mp4", 'w+') {|f| f.write(response.body) }
+    puts "response = #{response}"
+    File.open("./#{dirname}/#{videoName}#{videoNumber}.mp4", 'w+') {|f| f.write(response.body) }
+      end
+    end
   end
 end
 	 puts "ending function now..."
-# File is closed automatically at end of block
