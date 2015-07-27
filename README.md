@@ -22,4 +22,10 @@ Whatever you download, make sure that you have the legal right to do so beforeha
 
 4. Inside your termianl execute the command `ruby urlToFile.rb`  
 
-5. Enjoy your content
+5. Enjoy your content  
+
+##Caveats  
+
+The code can go through all the text files in one run, but if your computer shuts off then the code will time out. If this happens, you can just remove the url files from the folder that have already been read and rerun the ruby script on the current video series.
+
+The command line will print out every new file that is run which can be used to keep track of which files you’ve looked through, but it helps to know that ruby runs all files that start with 1, then 2, etc (i.e. 1 —> 10 —>11 —>19–>2–>20)
